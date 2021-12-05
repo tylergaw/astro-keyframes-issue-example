@@ -16,7 +16,7 @@ Having both shows the change between the two and why this seems like a bug.
 
 Is this example, the `.my-para` declaration will be scoped properly. The `.another-para` will not be scoped.
 
-```
+```astro
 <style>
   .my-para {
     color: blue;
@@ -36,10 +36,18 @@ Is this example, the `.my-para` declaration will be scoped properly. The `.anoth
 
 That input CSS produces the following bundled CSS. **Note**: I've modified formatting here for readability
 
-```
-.my-para.astro-FNZOVGOV {color:#00f}
-@keyframes fadeIn{to{opacity:100%}}
-.another-para{color:red}
+```css
+.my-para.astro-FNZOVGOV {
+  color: #00f;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 100%;
+  }
+}
+.another-para {
+  color: red;
+}
 ```
 
 The expecation is that `.another-para` would be scoped `.another-para.astro-FNZOVGOV`. This was was the behavior in Astro pre 0.21.
@@ -48,7 +56,7 @@ The expecation is that `.another-para` would be scoped `.another-para.astro-FNZO
 
 From what I've been able to tell, the `@keyframes` rule breaks scoping for all rules that come after it. So, if we modify our above example to put `@keyframes` first, no styles are scoped
 
-```
+```astro
 <style>
   @keyframes fadeIn {
     to {
@@ -68,17 +76,25 @@ From what I've been able to tell, the `@keyframes` rule breaks scoping for all r
 
 produces the following (again, formatting modified here for readability)
 
-```
-@keyframes fadeIn{to{opacity:100%}}
-.my-para {color:#00f}
-.another-para{color:red}
+```css
+@keyframes fadeIn {
+  to {
+    opacity: 100%;
+  }
+}
+.my-para {
+  color: #00f;
+}
+.another-para {
+  color: red;
+}
 ```
 
 ## Working around this
 
 This is a bit flimsy, but you can work around this by putting all `@keyframes` rules at the bottom of any `<style>`.
 
-```
+```astro
 <style>
   .my-para {
     color: blue;
@@ -98,10 +114,18 @@ This is a bit flimsy, but you can work around this by putting all `@keyframes` r
 
 Produces:
 
-```
-.my-para.astro-FNZOVGOV {color:#00f}
-.another-para.astro-FNZOVGOV {color:red}
-@keyframes fadeIn{to{opacity:100%}}
+```css
+.my-para.astro-FNZOVGOV {
+  color: #00f;
+}
+.another-para.astro-FNZOVGOV {
+  color: red;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 100%;
+  }
+}
 ```
 
 ## Other @-rules
