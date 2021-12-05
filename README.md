@@ -1,5 +1,7 @@
 This is an isolated example of an issue I'm seeing with how Astro 0.21+ handles CSS scoping when `@keyframe` is used.
 
+Issue: https://github.com/withastro/astro/issues/2127
+
 ## Summary
 
 Using `@keyframes` in a `<style>` block in an astro component breaks selector scoping for all rules after the `@keyframes` instance.
